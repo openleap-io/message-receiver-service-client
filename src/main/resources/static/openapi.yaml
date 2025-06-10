@@ -137,6 +137,25 @@ paths:
                         contentType: text/plain
                         base64Data: dGVzdA==
                         url: https://example.com/test.txt
+              Telegram Channel Example:
+                summary: Message request using the TELEGRAM channel and TEMPLATE message type.
+                description: Telegram Channel Example
+                value:
+                  recipients:
+                    - channel:
+                        channelType: TELEGRAM
+                        chatId: '@oltesme'
+                  message:
+                    messageType: TEMPLATE
+                    name: Teams message template
+                    templateParams:
+                      param1: value1
+                      param2: value2
+                    attachments:
+                      - name: host-A.log
+                        contentType: text/plain
+                        base64Data: dGVzdA==
+                        url: https://example.com/test.txt
         required: true
       responses:
         '202':
@@ -216,6 +235,19 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/TemplateMessage'
+      deprecated: true
+  /TelegramChannel:
+    get:
+      tags:
+        - Ignore
+      operationId: dummyTelegramChannelEndpoint
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TelegramChannel'
       deprecated: true
   /TeamsChannel:
     get:
@@ -320,6 +352,7 @@ components:
             - EMAIL
             - SLACK
             - TEAMS
+            - TELEGRAM
       description: Channel model for API request.
       example:
         channelType: TEAMS
@@ -444,6 +477,22 @@ components:
               type: string
               description: Teams tenant ID
               example: '1234567890'
+    TelegramChannel:
+      required:
+        - channelType
+      type: object
+      description: Telegram channel model for API request
+      example:
+        channelType: TELEGRAM
+        chatId: '@oltesme'
+      allOf:
+        - $ref: '#/components/schemas/Channel'
+        - type: object
+          properties:
+            chatId:
+              type: string
+              description: Telegram chat id
+              example: '@oltesme'
     TemplateMessage:
       type: object
       description: Template message implementation
