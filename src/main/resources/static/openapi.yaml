@@ -14,39 +14,11 @@ security:
   - UniApiKeycloakOauth2: []
   - LocalKeycloakOauth2: []
 tags:
-  - name: Message Template API
-    description: Endpoints for managing message templates.
   - name: Message API
     description: Endpoints for retrieving and managing messages
   - name: Ignore
     description: Swagger is not adding schemas if no endpoints are defined. This is a dummy controller to ensure schemas are generated.
 paths:
-  /mrs/template:
-    post:
-      tags:
-        - Message Template API
-      summary: Create a new message template
-      description: Creates a new message template based on the provided request.
-      operationId: createTemplate
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TemplateRequest'
-        required: true
-      responses:
-        '201':
-          description: Template created successfully
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/TemplateRequest'
-        '400':
-          description: Invalid input provided
-          content:
-            '*/*':
-              example:
-                error: Invalid input
   /mrs/message:
     post:
       tags:
@@ -171,58 +143,6 @@ paths:
       security:
         - UniApiKeycloakOauth2: []
         - LocalKeycloakOauth2: []
-  /mrs/template/template:
-    patch:
-      tags:
-        - Message Template API
-      summary: Update an existing message template
-      description: Updates an existing message template based on the provided request.
-      operationId: updateTemplate
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TemplateRequest'
-        required: true
-      responses:
-        '200':
-          description: Template updated successfully
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/TemplateRequest'
-        '400':
-          description: Invalid input provided
-          content:
-            '*/*':
-              example:
-                error: Invalid input
-  /mrs/template/template/{name}:
-    get:
-      tags:
-        - Message Template API
-      summary: Get a message template by name
-      description: Retrieves a message template by its name.
-      operationId: getTemplateByName
-      parameters:
-        - name: name
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Template retrieved successfully
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/TemplateRequest'
-        '404':
-          description: Template not found
-          content:
-            '*/*':
-              example:
-                error: Template not found
   /TemplateMessage:
     get:
       tags:
@@ -303,22 +223,6 @@ paths:
       deprecated: true
 components:
   schemas:
-    TemplateRequest:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Template name
-          example: test-template
-        subject:
-          type: string
-          description: Subject of the template
-          example: Welcome to OpenLeap
-        body:
-          type: string
-          description: Body of the template
-          example: Hello {user}, welcome to OpenLeap!
-      description: Template request model
     Attachment:
       type: object
       properties:
@@ -377,6 +281,10 @@ components:
         - $ref: '#/components/schemas/Channel'
         - type: object
           properties:
+            cc:
+              type: string
+              description: List of email addresses to send to
+              example: <EMAIL>
             bcc:
               type: string
               description: List of email addresses to send to
